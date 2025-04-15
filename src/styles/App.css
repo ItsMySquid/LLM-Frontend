@@ -1,0 +1,153 @@
+/* Basisinstellingen */
+body {
+  margin: 0;
+  font-family: 'Trebuchet MS', sans-serif;
+  background-image: url('/public/background.jpg'); /* Fantasy-achtergrond */
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Semi-transparante overlay */
+.background-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 0;
+}
+
+/* Titel linksboven */
+.title {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 2.5rem;
+  color: #fff;
+  margin: 0;
+}
+
+/* Chatcontainer */
+.chat-container {
+  position: relative;
+  z-index: 1;
+  background-color: rgba(20, 20, 20, 0.85);
+  padding: 2rem;
+  border-radius: 16px;
+  max-width: 800px; /* Breder dan voorheen */
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  height: 70vh;
+}
+
+/* Subtitel */
+.subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  color: #ccc;
+}
+
+/* Chatberichten sectie */
+.chat-area {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  max-height: 70%;
+  width: 100%; /* Maak het reactieveld breder */
+}
+
+/* Scrollbar styling */
+.chat-area::-webkit-scrollbar {
+  width: 8px; /* Breedte van de scrollbar */
+}
+
+.chat-area::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.2); /* Achtergrond van de track */
+}
+
+.chat-area::-webkit-scrollbar-thumb {
+  background-color: #3d9970; /* Grijze kleur voor de scrollbar */
+  border-radius: 10px;
+  border: 2px solid rgba(0, 0, 0, 0.2); /* Voeg een beetje ruimte toe rondom de scrollbar */
+}
+
+.chat-area::-webkit-scrollbar-thumb:hover {
+  background-color: #2e7d5a; /* Donkerder wanneer je eroverheen hovert */
+}
+
+/* Formulier */
+form {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+input[type="text"] {
+  padding: 1rem;
+  border-radius: 8px;
+  border: none;
+  flex: 1;
+  font-size: 1.1rem;
+  width: 80%;
+}
+
+button {
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  background-color: #3d9970;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1.1rem;
+}
+
+button:hover {
+  background-color: #2e7d5a;
+}
+
+/* Bubbels */
+.chat-bubble {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.chat-bubble.bot {
+  flex-direction: row;
+}
+
+.chat-bubble.user {
+  flex-direction: row-reverse;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 6px;
+  image-rendering: pixelated;
+}
+
+.message {
+  background-color: #2b2b2b;
+  border: 1px solid #3d9970;
+  border-radius: 12px;
+  padding: 1rem;
+  max-width: 75%;
+  color: #fff;
+  font-size: 1.1rem; /* Grotere tekstgrootte */
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
