@@ -6,6 +6,7 @@ function ChatApp() {
         JSON.parse(localStorage.getItem("myChatHistory")) || []
     );
     const [input, setInput] = useState("");
+    const [isLoading, setIsLoading] = useState(false);  // Timer state
     const chatAreaRef = useRef();
 
     useEffect(() => {
@@ -13,13 +14,18 @@ function ChatApp() {
         chatAreaRef.current.scrollTop = chatAreaRef.current.scrollHeight;
     }, [messages]);
 
+    const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const prompt = input.trim();
-        if (!prompt) return;
+        if (!prompt || isLoading) return;
+
+        setIsLoading(true);
 
         const newMessages = [...messages, { sender: 'user', text: prompt }];
-        setMessages(newMessages);
+        const updatedMessages = [...newMessages, { sender: 'bot', text: "" }]; // Leeg botbericht om op te bouwen
+        setMessages(updatedMessages);
         setInput("");
 
         try {
@@ -30,25 +36,40 @@ function ChatApp() {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    messages: newMessages.map(msg => [msg.sender === "user" ? "human" : "assistant", msg.text])
+                    prompt: prompt
                 })
             });
 
             if (!response.ok) {
-                throw new Error(`Serverfout: ${response.status}`);
+                new Error(`Serverfout: ${response.status}`);
             }
 
-            const data = await response.json();
-            const botMessage = { sender: "bot", text: data.message };
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder("utf-8");
+            let fullResponse = "";
 
-            const updatedMessages = [...newMessages, botMessage];
-            setMessages(updatedMessages);
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                const chunk = decoder.decode(value, { stream: true });
+
+                for (let char of chunk) {
+                    fullResponse += char;
+                    updatedMessages[updatedMessages.length - 1].text = fullResponse;
+                    setMessages([...updatedMessages]);
+                    await sleep(30); // Vertraag de weergave (30ms per karakter)
+                }
+            }
+
             localStorage.setItem("myChatHistory", JSON.stringify(updatedMessages));
         } catch (err) {
             const errorMessage = { sender: "bot", text: "Er ging iets mis met het ophalen van een antwoord." };
             const fallback = [...newMessages, errorMessage];
             setMessages(fallback);
             localStorage.setItem("myChatHistory", JSON.stringify(fallback));
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -81,7 +102,7 @@ function ChatApp() {
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                     />
-                    <button type="submit">Verstuur</button>
+                    <button type="submit" disabled={isLoading}>Verstuur</button>  {/* Button disabled tijdens wachten */}
                 </form>
             </div>
         </div>

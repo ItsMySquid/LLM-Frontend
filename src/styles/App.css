@@ -117,6 +117,14 @@ button:hover {
   background-color: #2e7d5a;
 }
 
+/* Disabled button styling */
+button:disabled {
+  background-color: #2e7d5a;  /* Donkere kleur om aan te geven dat de knop inactief is */
+  cursor: not-allowed; /* Verander cursor om aan te geven dat het niet klikbaar is */
+  opacity: 0.6; /* Maak de knop semi-transparant om visueel te benadrukken dat deze uitgeschakeld is */
+  transition: opacity 0.3s ease;
+}
+
 /* Bubbels */
 .chat-bubble {
   display: flex;
