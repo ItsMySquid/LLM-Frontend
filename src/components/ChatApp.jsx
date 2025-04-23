@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import '../styles/App.css';
 
 function ChatApp() {
+    const [username, setUsername] = useState("");
     const [messages, setMessages] = useState(() =>
         JSON.parse(localStorage.getItem("myChatHistory")) || []
     );
@@ -36,12 +37,13 @@ function ChatApp() {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    prompt: prompt
+                    prompt,
+                    username: username || null
                 })
             });
 
             if (!response.ok) {
-                new Error(`Serverfout: ${response.status}`);
+                throw new Error(`Serverfout: ${response.status}`);
             }
 
             const reader = response.body.getReader();
@@ -75,10 +77,20 @@ function ChatApp() {
 
     return (
         <div className="chat-background">
-            <div className="background-overlay" />
+            <div className="background-overlay"/>
             <h1 className="title">Skyblock Bot</h1>
+
             <div className="chat-container">
                 <p className="subtitle">Stel je vraag over Skyblock-items</p>
+                <div className="username-bar">
+                    <input
+                        type="text"
+                        className="username-input"  // Voeg deze class toe
+                        placeholder="Minecraft gebruikersnaam (optioneel)"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                </div>
 
                 <div className="chat-area" ref={chatAreaRef}>
                     {messages.map((msg, index) => (
@@ -102,7 +114,7 @@ function ChatApp() {
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                     />
-                    <button type="submit" disabled={isLoading}>Verstuur</button>  {/* Button disabled tijdens wachten */}
+                    <button type="submit" disabled={isLoading}>Verstuur</button>
                 </form>
             </div>
         </div>

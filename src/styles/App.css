@@ -159,3 +159,53 @@ button:disabled {
   line-height: 1.4;
   white-space: pre-wrap;
 }
+
+.skyblock-time {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.1rem;
+  color: #00ffa2;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  z-index: 2;
+  box-shadow: 0 0 12px rgba(0, 255, 162, 0.6);
+  border: 1px solid #00ffa2;
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 8px #00ffa2;
+  }
+  50% {
+    box-shadow: 0 0 20px #00ffa2;
+  }
+  100% {
+    box-shadow: 0 0 8px #00ffa2;
+  }
+}
+
+/* Gebruikersnaamveld (subtiel weergegeven) */
+.username-input {
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ccc;
+  font-size: 0.9rem;
+  width: 200px;
+  outline: none;
+  transition: background-color 0.3s ease;
+}
+
+.username-input::placeholder {
+  color: #888;
+}
+
+.username-input:focus {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
