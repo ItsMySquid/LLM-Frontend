@@ -4,7 +4,7 @@ Zeker! Hier is een `README.md` die past bij jouw **frontend React-applicatie** d
 
 # Hypixel Skyblock Guide - Frontend
 
-Dit project is een **React** frontend die communiceert met de [Hypixel Skyblock Guide API](https://github.com/jouwgebruikersnaam/hypixel-skyblock-guide-api).  
+Dit project is een **React** frontend die communiceert met de [Hypixel Skyblock Guide API](https://github.com/ItsMySquid/LLM-Chatbot).  
 De applicatie biedt een gebruikersvriendelijke interface om te **chatten** met een AI-gebaseerde gids voor **Hypixel Skyblock**.
 
 ## ✨ Functies
