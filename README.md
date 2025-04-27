@@ -67,11 +67,8 @@ En deployen naar platforms zoals:
 - De API URL moet overeenkomen met de server waarop de Hypixel Skyblock Guide API actief is.
 - Bewaar `.env`-bestanden altijd buiten je publieke GitHub-repository!
 
-## 📸 Screenshots (optioneel)
-*(Hier kun je eventueel screenshots van de UI invoegen als je dat later wilt.)*
+## 📸 Screenshots 
+![Screenshot_2025-04-27_195307](https://github.com/user-attachments/assets/d4eb2267-0f0e-4246-ad7d-88f2207fa544)
+
 
 ---
-
-Wil je dat ik ook een extraatje toevoeg zoals badges (bijv. React version, License, Deployment Status) of een fancy voorbeeld van een chatflow? 🚀  
-Dat maakt je README nóg iets meer af! 🎨  
-Wil je dat?
