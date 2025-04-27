@@ -7,11 +7,10 @@ function ChatApp() {
         JSON.parse(localStorage.getItem("myChatHistory")) || []
     );
     const [input, setInput] = useState("");
-    const [isLoading, setIsLoading] = useState(false);  // Timer state
+    const [isLoading, setIsLoading] = useState(false);
     const chatAreaRef = useRef();
 
     useEffect(() => {
-        // Scroll automatisch naar beneden bij nieuwe berichten
         chatAreaRef.current.scrollTop = chatAreaRef.current.scrollHeight;
     }, [messages]);
 
@@ -23,11 +22,14 @@ function ChatApp() {
         if (!prompt || isLoading) return;
 
         setIsLoading(true);
-
-        const newMessages = [...messages, { sender: 'user', text: prompt }];
-        const updatedMessages = [...newMessages, { sender: 'bot', text: "" }]; // Leeg botbericht om op te bouwen
-        setMessages(updatedMessages);
         setInput("");
+
+        const newUserMessage = { sender: 'user', text: prompt };
+        const newBotMessage = { sender: 'bot', text: "" };
+
+        // Voeg userbericht toe aan scherm
+        const interimMessages = [...messages, newUserMessage, newBotMessage];
+        setMessages(interimMessages);
 
         try {
             const response = await fetch("http://localhost:3000/", {
@@ -38,7 +40,8 @@ function ChatApp() {
                 },
                 body: JSON.stringify({
                     prompt,
-                    username: username || null
+                    username: username || null,
+                    history: [...messages,] // stuur uservraag alvast mee
                 })
             });
 
@@ -58,16 +61,21 @@ function ChatApp() {
 
                 for (let char of chunk) {
                     fullResponse += char;
-                    updatedMessages[updatedMessages.length - 1].text = fullResponse;
-                    setMessages([...updatedMessages]);
-                    await sleep(30); // Vertraag de weergave (30ms per karakter)
+                    newBotMessage.text = fullResponse;
+
+                    setMessages([...messages, newUserMessage, newBotMessage]);
+                    await sleep(30);
                 }
             }
 
-            localStorage.setItem("myChatHistory", JSON.stringify(updatedMessages));
+            // Update history inclusief huidige vraag + antwoord
+            const finalMessages = [...messages, newUserMessage, newBotMessage];
+            setMessages(finalMessages);
+            localStorage.setItem("myChatHistory", JSON.stringify(finalMessages));
+
         } catch (err) {
             const errorMessage = { sender: "bot", text: "Er ging iets mis met het ophalen van een antwoord." };
-            const fallback = [...newMessages, errorMessage];
+            const fallback = [...messages, newUserMessage, errorMessage];
             setMessages(fallback);
             localStorage.setItem("myChatHistory", JSON.stringify(fallback));
         } finally {
@@ -75,9 +83,10 @@ function ChatApp() {
         }
     };
 
+
     return (
         <div className="chat-background">
-            <div className="background-overlay"/>
+            <div className="background-overlay" />
             <h1 className="title">Skyblock Bot</h1>
 
             <div className="chat-container">
@@ -85,7 +94,7 @@ function ChatApp() {
                 <div className="username-bar">
                     <input
                         type="text"
-                        className="username-input"  // Voeg deze class toe
+                        className="username-input"
                         placeholder="Minecraft gebruikersnaam (optioneel)"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
